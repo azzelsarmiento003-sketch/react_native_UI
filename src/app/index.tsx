@@ -1,98 +1,253 @@
-import * as Device from 'expo-device';
-import { Platform, StyleSheet } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-
-import { AnimatedIcon } from '@/components/animated-icon';
-import { HintRow } from '@/components/hint-row';
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import { WebBadge } from '@/components/web-badge';
-import { BottomTabInset, MaxContentWidth, Spacing } from '@/constants/theme';
-
-function getDevMenuHint() {
-  if (Platform.OS === 'web') {
-    return <ThemedText type="small">use browser devtools</ThemedText>;
-  }
-  if (Device.isDevice) {
-    return (
-      <ThemedText type="small">
-        shake device or press <ThemedText type="code">m</ThemedText> in terminal
-      </ThemedText>
-    );
-  }
-  const shortcut = Platform.OS === 'android' ? 'cmd+m (or ctrl+m)' : 'cmd+d';
-  return (
-    <ThemedText type="small">
-      press <ThemedText type="code">{shortcut}</ThemedText>
-    </ThemedText>
-  );
-}
+import { useState } from 'react';
+import {
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+} from 'react-native';
 
 export default function HomeScreen() {
+  const [editing, setEditing] = useState(false);
+
+  const [name, setName] = useState('Irvy Sarmiento');
+  const [age, setAge] = useState('23');
+  const [course, setCourse] = useState('BS Computer Science');
+  const [yearSection, setYearSection] = useState('3rd Year - BSCS 3B');
+  const [school, setSchool] = useState(
+    'North West Samar State University'
+  );
+  const [location, setLocation] = useState('Calbayog City, Samar');
+  const [hobby, setHobby] = useState('Playing games and listening to music');
+  const [food, setFood] = useState('Chicken');
+  const [dreamJob, setDreamJob] = useState('Firefighter');
+
   return (
-    <ThemedView style={styles.container}>
-      <SafeAreaView style={styles.safeArea}>
-        <ThemedView style={styles.heroSection}>
-          <AnimatedIcon />
-          <ThemedText type="title" style={styles.title}>
-            Welcome to&nbsp;Expo
-          </ThemedText>
-        </ThemedView>
+    <ScrollView style={styles.container}>
 
-        <ThemedText type="code" style={styles.code}>
-          get started
-        </ThemedText>
+      <Text style={styles.title}>My Profile</Text>
 
-        <ThemedView type="backgroundElement" style={styles.stepContainer}>
-          <HintRow
-            title="Try editing"
-            hint={<ThemedText type="code">src/app/index.tsx</ThemedText>}
+      <View style={styles.profileHeader}>
+        <View style={styles.profileCircle}>
+          <Text style={styles.profileLetter}>I</Text>
+        </View>
+
+        <Text style={styles.profileName}>{name}</Text>
+        <Text style={styles.profileCourse}>{course}</Text>
+      </View>
+
+      <View style={styles.card}>
+
+        <Text style={styles.label}>Full Name</Text>
+        {editing ? (
+          <TextInput
+            style={styles.input}
+            value={name}
+            onChangeText={setName}
           />
-          <HintRow title="Dev tools" hint={getDevMenuHint()} />
-          <HintRow
-            title="Fresh start"
-            hint={<ThemedText type="code">npm run reset-project</ThemedText>}
-          />
-        </ThemedView>
+        ) : (
+          <Text style={styles.info}>{name}</Text>
+        )}
 
-        {Platform.OS === 'web' && <WebBadge />}
-      </SafeAreaView>
-    </ThemedView>
+        <Text style={styles.label}>Age</Text>
+        {editing ? (
+          <TextInput
+            style={styles.input}
+            value={age}
+            onChangeText={setAge}
+          />
+        ) : (
+          <Text style={styles.info}>{age}</Text>
+        )}
+
+        <Text style={styles.label}>Course</Text>
+        {editing ? (
+          <TextInput
+            style={styles.input}
+            value={course}
+            onChangeText={setCourse}
+          />
+        ) : (
+          <Text style={styles.info}>{course}</Text>
+        )}
+
+        <Text style={styles.label}>Year & Section</Text>
+        {editing ? (
+          <TextInput
+            style={styles.input}
+            value={yearSection}
+            onChangeText={setYearSection}
+          />
+        ) : (
+          <Text style={styles.info}>{yearSection}</Text>
+        )}
+
+        <Text style={styles.label}>School</Text>
+        {editing ? (
+          <TextInput
+            style={styles.input}
+            value={school}
+            onChangeText={setSchool}
+          />
+        ) : (
+          <Text style={styles.info}>{school}</Text>
+        )}
+
+        <Text style={styles.label}>Location</Text>
+        {editing ? (
+          <TextInput
+            style={styles.input}
+            value={location}
+            onChangeText={setLocation}
+          />
+        ) : (
+          <Text style={styles.info}>{location}</Text>
+        )}
+
+        <Text style={styles.label}>Hobby</Text>
+        {editing ? (
+          <TextInput
+            style={styles.input}
+            value={hobby}
+            onChangeText={setHobby}
+          />
+        ) : (
+          <Text style={styles.info}>{hobby}</Text>
+        )}
+
+        <Text style={styles.label}>Favorite Food</Text>
+        {editing ? (
+          <TextInput
+            style={styles.input}
+            value={food}
+            onChangeText={setFood}
+          />
+        ) : (
+          <Text style={styles.info}>{food}</Text>
+        )}
+
+        <Text style={styles.label}>Dream Job</Text>
+        {editing ? (
+          <TextInput
+            style={styles.input}
+            value={dreamJob}
+            onChangeText={setDreamJob}
+          />
+        ) : (
+          <Text style={styles.info}>{dreamJob}</Text>
+        )}
+
+        <Pressable
+          style={styles.button}
+          onPress={() => setEditing(!editing)}
+        >
+          <Text style={styles.buttonText}>
+            {editing ? 'Save Profile' : 'Edit Profile'}
+          </Text>
+        </Pressable>
+
+      </View>
+
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    flexDirection: 'row',
+    backgroundColor: '#F4F1EA',
+    padding: 20,
   },
-  safeArea: {
-    flex: 1,
-    paddingHorizontal: Spacing.four,
-    alignItems: 'center',
-    gap: Spacing.three,
-    paddingBottom: BottomTabInset + Spacing.three,
-    maxWidth: MaxContentWidth,
-  },
-  heroSection: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    flex: 1,
-    paddingHorizontal: Spacing.four,
-    gap: Spacing.four,
-  },
+
   title: {
+    fontSize: 30,
+    fontWeight: 'bold',
+    color: '#333333',
     textAlign: 'center',
+    marginTop: 35,
+    marginBottom: 20,
   },
-  code: {
-    textTransform: 'uppercase',
+
+  profileHeader: {
+    backgroundColor: '#FFFFFF',
+    borderRadius: 15,
+    padding: 20,
+    alignItems: 'center',
+    marginBottom: 20,
   },
-  stepContainer: {
-    gap: Spacing.three,
-    alignSelf: 'stretch',
-    paddingHorizontal: Spacing.three,
-    paddingVertical: Spacing.four,
-    borderRadius: Spacing.four,
+
+  profileCircle: {
+    width: 75,
+    height: 75,
+    borderRadius: 40,
+    backgroundColor: '#D8B08C',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 10,
+  },
+
+  profileLetter: {
+    fontSize: 32,
+    fontWeight: 'bold',
+    color: 'white',
+  },
+
+  profileName: {
+    fontSize: 22,
+    fontWeight: 'bold',
+    color: '#333333',
+  },
+
+  profileCourse: {
+    fontSize: 14,
+    color: '#777777',
+    marginTop: 4,
+  },
+
+  card: {
+    backgroundColor: '#FFFFFF',
+    borderRadius: 15,
+    padding: 22,
+    marginBottom: 30,
+  },
+
+  label: {
+    fontSize: 13,
+    color: '#888888',
+    marginTop: 8,
+  },
+
+  info: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#333333',
+    marginTop: 3,
+    marginBottom: 8,
+  },
+
+  input: {
+    borderWidth: 1,
+    borderColor: '#D5D5D5',
+    borderRadius: 8,
+    padding: 10,
+    fontSize: 16,
+    color: '#333333',
+    marginTop: 3,
+    marginBottom: 8,
+  },
+
+  button: {
+    backgroundColor: '#8B6F47',
+    padding: 14,
+    borderRadius: 10,
+    alignItems: 'center',
+    marginTop: 20,
+  },
+
+  buttonText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: 'bold',
   },
 });
